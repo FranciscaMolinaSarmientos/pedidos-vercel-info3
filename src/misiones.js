@@ -26,9 +26,21 @@ import { ESTADOS } from './datos.js'
 // Pista: prueba en la consola 0.1 + 0.2 y verás por qué hay que redondear.
 //        Math.round(x * 100) / 100
 export function totalPedido(pedido) {
-  return 0 // TODO
-}
+  if (pedido == null || pedido.items == null || pedido.items.length == 0) {
+    return 0
+  }
 
+  let subtotal = 0
+  for (let i = 0; i < pedido.items.length; i++) {
+    const item = pedido.items[i]
+    subtotal += item.cantidad * item.precioUnitario
+  }
+
+  const descuento = pedido.descuento || 0
+  const total = subtotal * (1 - descuento)
+
+  return Math.round(total * 100) / 100
+}
 // ----------------------------------------------------------------------------
 // MISIÓN 2 · RF4 — ¿Este cambio de estado es válido?
 // ----------------------------------------------------------------------------

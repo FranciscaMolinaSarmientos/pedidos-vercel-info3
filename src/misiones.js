@@ -51,9 +51,28 @@ export function totalPedido(pedido) {
 // Un estado que no existe también es false.
 // Pista: ESTADOS ya es un arreglo ordenado. ¿Qué te dice indexOf?
 export function puedeTransicionar(actual, nuevo) {
-  return true // TODO: hoy acepta cualquier cosa. ¿Qué tan grave sería eso en producción?
-}
+  let posicionActual = -1
+  let posicionNueva = -1
 
+  for (let i = 0; i < ESTADOS.length; i++) {
+    if (ESTADOS[i] == actual) {
+      posicionActual = i
+    }
+    if (ESTADOS[i] == nuevo) {
+      posicionNueva = i
+    }
+  }
+
+  if (posicionActual == -1 || posicionNueva == -1) {
+    return false
+  }
+
+  if (posicionNueva == posicionActual + 1) {
+    return true
+  }
+
+  return false
+}
 // ----------------------------------------------------------------------------
 // MISIÓN 3 · RF1 — ¿Los datos del cliente son válidos?
 // ----------------------------------------------------------------------------

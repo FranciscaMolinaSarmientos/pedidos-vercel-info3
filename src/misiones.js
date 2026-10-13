@@ -109,9 +109,19 @@ export function validarCliente(cliente) {
 //   { registrado: 3, en_preparacion: 3, listo: 2, entregado: 2 }
 // Con una lista vacía, todos van en 0.
 export function resumenPorEstado(pedidos) {
-  return {} // TODO
-}
+  let resumen = {}
 
+  for (let i = 0; i < ESTADOS.length; i++) {
+    resumen[ESTADOS[i]] = 0
+  }
+
+  for (let i = 0; i < pedidos.length; i++) {
+    let estado = pedidos[i].estado
+    resumen[estado] = resumen[estado] + 1
+  }
+
+  return resumen
+}
 // ----------------------------------------------------------------------------
 // MISIÓN 5 · RF5 — Buscar pedidos por nombre de cliente
 // ----------------------------------------------------------------------------

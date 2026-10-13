@@ -130,10 +130,33 @@ export function resumenPorEstado(pedidos) {
 // "José Martínez". Un texto vacío (o solo espacios) devuelve todos.
 // Pista: 'Ramírez'.normalize('NFD').replace(/[̀-ͯ]/g, '')
 //        Investiga qué hace NFD. Es un problema real en sistemas en español.
-export function buscarPedidos(pedidos, texto) {
-  return [] // TODO
+//Significa Normalization Form Descomposition. Lo que hace es que separa un carácter con acento en 2 
+//la letra base y el acento como otro carácter aparte, por ejemplo la í de Ramírez la separa en i+´
+//entonces es como si visualmente se viera igual pero por adentro está separados
+//y aqui sirve porque como el acento queda suelto se borra con el replace y usa una expresion que detecta los acentos y deja 
+//la letra base sola y entonces por eso encuentra jose y Jose ya despúes de normalizar
+//Fuente: https://mbrenndoerfer.com/writing/text-normalization-unicode-nlp    :P
+function normalizarTexto(texto) {
+  return texto.toLowerCase().normalize('NFD').replace(/[\u0300-\u036f]/g, '')
 }
 
+export function buscarPedidos(pedidos, texto) {
+  let textoLimpio = normalizarTexto(texto).trim()
+
+  if (textoLimpio == '') {
+    return pedidos
+  }
+
+  let resultado = []
+  for (let i = 0; i < pedidos.length; i++) {
+    let clienteLimpio = normalizarTexto(pedidos[i].cliente)
+    if (clienteLimpio.includes(textoLimpio)) {
+      resultado.push(pedidos[i])
+    }
+  }
+
+  return resultado
+}
 // ----------------------------------------------------------------------------
 // MISIÓN 6 · DESTACADO — Los mejores clientes
 // ----------------------------------------------------------------------------

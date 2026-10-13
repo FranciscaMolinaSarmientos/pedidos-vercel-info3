@@ -85,9 +85,23 @@ export function puedeTransicionar(actual, nuevo) {
 //                         correo: algo@algo.algo   (el email es opcional)
 // Pista: '55 1234-5678'.replace(/[\s-]/g, '')   y   /^\d{10}$/.test(...)
 export function validarCliente(cliente) {
-  return [] // TODO
-}
+  let errores = []
 
+  if (!cliente.nombre || cliente.nombre.trim() == '') {
+    errores.push('nombre_requerido')
+  }
+
+  let soloNumeros = (cliente.telefono || '').replace(/[\s-]/g, '')
+  if (!/^\d{10}$/.test(soloNumeros)) {
+    errores.push('telefono_invalido')
+  }
+
+  if (cliente.email && !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(cliente.email)) {
+    errores.push('email_invalido')
+  }
+
+  return errores
+}
 // ----------------------------------------------------------------------------
 // MISIÓN 4 · RF5 — ¿Cuántos pedidos hay en cada estado?
 // ----------------------------------------------------------------------------
